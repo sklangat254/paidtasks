@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026 Nairobi Summer Farmers Market | EventsKenya</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Nunito Sans',-apple-system,BlinkMacSystemFont,sans-serif;background:#f8f7fa;color:#1E0A3C;font-size:15px;line-height:1.5;overflow-x:hidden;}
+a{color:inherit;text-decoration:none;cursor:pointer;}
+button{font-family:inherit;cursor:pointer;}
+img{display:block;max-width:100%;}
+:root{
+  --orange:#E05020;--orange-h:#c94418;
+  --text:#1E0A3C;--text-l:#6F7287;--text-xl:#a9acb7;
+  --border:#DBDAE3;--bg:#f8f7fa;--white:#fff;
+  --footer:#1E0A3C;
+}
+
+/* ── SPA pages ── */
+.page{display:none;} .page.active{display:block;}
+
+/* ── Toast ── */
+#toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(20px);background:#1E0A3C;color:#fff;padding:12px 22px;border-radius:8px;font-size:14px;font-weight:700;opacity:0;pointer-events:none;transition:all .35s;z-index:9999;white-space:nowrap;}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+/* ── Navbar ── */
+.navbar{background:#fff;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:500;}
+.navbar-inner{max-width:1280px;margin:0 auto;padding:0 24px;height:64px;display:flex;align-items:center;gap:16px;}
+.nav-logo{font-size:22px;font-weight:900;color:var(--orange);letter-spacing:-.5px;white-space:nowrap;flex-shrink:0;cursor:pointer;}
+.nav-search{flex:1;max-width:580px;display:flex;border:1px solid var(--border);border-radius:4px;overflow:hidden;height:44px;}
+.search-kw{flex:1;display:flex;align-items:center;padding:0 12px;gap:8px;border-right:1px solid var(--border);}
+.search-kw input,.search-loc input{border:none;outline:none;font-family:inherit;font-size:14px;color:var(--text);background:transparent;width:100%;}
+.search-kw input::placeholder,.search-loc input::placeholder{color:var(--text-l);}
+.search-loc{display:flex;align-items:center;padding:0 12px;gap:8px;min-width:120px;}
+.search-btn{background:var(--orange);border:none;width:50px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .15s;}
+.search-btn:hover{background:var(--orange-h);}
+.nav-links{display:flex;align-items:center;gap:2px;margin-left:auto;flex-shrink:0;}
+.nav-link{padding:8px 11px;font-size:14px;font-weight:600;color:var(--text);border-radius:4px;white-space:nowrap;cursor:pointer;transition:background .12s;}
+.nav-link:hover{background:var(--bg);}
+.nav-link.signin{border:1px solid var(--text);padding:7px 15px;}
+.nav-link.signin:hover{background:var(--text);color:#fff;}
+.hamburger{display:none;background:none;border:none;font-size:24px;color:var(--text);margin-left:auto;}
+
+/* ── Mobile Menu ── */
+.mobile-menu{position:fixed;inset:0;background:#fff;z-index:600;display:flex;flex-direction:column;padding:20px;transform:translateX(100%);transition:transform .25s;}
+.mobile-menu.open{transform:translateX(0);}
+.mm-close{align-self:flex-end;background:none;border:none;font-size:28px;color:var(--text);margin-bottom:20px;}
+.mm-search{display:flex;border:1px solid var(--border);border-radius:4px;overflow:hidden;margin-bottom:24px;}
+.mm-search input{flex:1;border:none;outline:none;padding:12px 14px;font-family:inherit;font-size:14px;}
+.mm-search button{background:var(--orange);border:none;color:#fff;padding:12px 16px;}
+.mm-links{display:flex;flex-direction:column;gap:4px;}
+.mm-link{padding:14px 12px;font-size:16px;font-weight:700;color:var(--text);border-radius:6px;cursor:pointer;border-bottom:1px solid var(--border);}
+.mm-link:hover{color:var(--orange);}
+.mm-signin{margin-top:16px;background:var(--orange);color:#fff;border:none;border-radius:4px;padding:14px;font-size:16px;font-weight:800;width:100%;cursor:pointer;}
+
+/* ── Hero ── */
+.hero-wrap{background:#111;width:100%;overflow:hidden;line-height:0;position:relative;}
+/*
+  ╔══════════════════════════════════════════════════════════╗
+  ║  HOW TO CHANGE THE BIG BANNER PHOTO (hero image)        ║
+  ║                                                          ║
+  ║  Option A — Use a photo URL from the web:               ║
+  ║    Find a photo online → right-click it → "Copy image   ║
+  ║    address" → paste it into src="YOUR_URL_HERE"          ║
+  ║                                                          ║
+  ║  Option B — Use your own photo file:                    ║
+  ║    Put your photo (e.g. hero.jpg) in the same folder    ║
+  ║    as this HTML file, then use: src="hero.jpg"          ║
+  ║                                                          ║
+  ║  Option C — Free stock photos (no account needed):      ║
+  ║    Go to unsplash.com → search "farmers market Kenya"   ║
+  ║    → click photo → right-click → Copy image address     ║
+  ╚══════════════════════════════════════════════════════════╝
+*/
+.hero-img{width:100%;height:440px;object-fit:cover;object-position:center 30%;display:block;}
+
+/* ── Page grid ── */
+.page-wrap{max-width:1280px;margin:0 auto;padding:32px 24px 60px;display:grid;grid-template-columns:1fr 320px;gap:40px;align-items:start;}
+.main-col{min-width:0;}
+
+/* ── Sidebar ── */
+.sidebar{position:sticky;top:80px;}
+.sidebar-box{background:#fff;border:1px solid var(--border);border-radius:8px;padding:24px;}
+.sb-label{font-size:18px;font-weight:800;margin-bottom:4px;}
+.sb-sub{font-size:14px;color:var(--text-l);margin-bottom:20px;}
+.sb-btn{display:block;width:100%;background:var(--orange);color:#fff;border:none;border-radius:4px;padding:14px;font-size:16px;font-weight:800;text-align:center;cursor:pointer;transition:background .15s;}
+.sb-btn:hover{background:var(--orange-h);}
+
+/* ── Event header ── */
+.status-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;}
+.ended-badge{display:inline-flex;align-items:center;gap:6px;background:#f4f3f7;border:1px solid #c4bdd6;border-radius:4px;padding:5px 12px;font-size:13px;font-weight:700;}
+.badge-i{width:16px;height:16px;background:var(--text);border-radius:50%;display:inline-flex;align-items:center;justify-content:center;color:#fff;font-size:10px;font-weight:900;flex-shrink:0;}
+.action-btns{display:flex;gap:14px;}
+.act-btn{background:none;border:none;color:var(--orange);padding:4px;cursor:pointer;display:flex;align-items:center;transition:opacity .15s;}
+.act-btn:hover{opacity:.65;}
+.event-title{font-size:32px;font-weight:900;line-height:1.2;margin-bottom:20px;letter-spacing:-.5px;}
+.org-row{display:flex;align-items:center;gap:14px;padding:16px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);margin-bottom:20px;}
+
+/*
+  ╔══════════════════════════════════════════════════════════╗
+  ║  HOW TO CHANGE THE ORGANISER AVATAR PHOTO               ║
+  ║  Replace the src URL inside .org-avatar img below       ║
+  ╚══════════════════════════════════════════════════════════╝
+*/
+.org-avatar{width:48px;height:48px;border-radius:50%;background:#e8e2f0;border:1px solid var(--border);overflow:hidden;flex-shrink:0;}
+.org-avatar img{width:100%;height:100%;object-fit:cover;}
+.org-details{flex:1;}
+.org-by{font-size:14px;color:var(--text-l);}
+.org-name{font-size:15px;font-weight:800;color:var(--orange);cursor:pointer;}
+.org-name:hover{text-decoration:underline;}
+.org-stats{font-size:13px;color:var(--text-l);margin-top:2px;}
+.follow-btn{border:2px solid var(--text);background:transparent;color:var(--text);font-size:14px;font-weight:700;padding:9px 22px;border-radius:4px;cursor:pointer;font-family:inherit;transition:all .15s;flex-shrink:0;}
+.follow-btn:hover,.follow-btn.following{background:var(--text);color:#fff;}
+.event-meta{display:flex;flex-direction:column;gap:10px;margin-bottom:26px;}
+.meta-row{display:flex;align-items:flex-start;gap:10px;font-size:15px;color:var(--text-l);}
+.meta-ico{flex-shrink:0;margin-top:2px;}
+.meta-link{color:var(--orange);cursor:pointer;font-weight:600;}
+.meta-link:hover{text-decoration:underline;}
+.view-wrap{text-align:center;margin:28px 0 40px;}
+.view-btn{border:2px solid var(--text);background:transparent;color:var(--text);font-size:15px;font-weight:700;padding:13px 44px;border-radius:4px;cursor:pointer;font-family:inherit;transition:all .15s;}
+.view-btn:hover{background:var(--text);color:#fff;}
+.event-details-panel{display:none;background:#f8f7fa;border-radius:8px;padding:20px;margin-bottom:24px;border:1px solid var(--border);}
+.event-details-panel.open{display:block;}
+.event-details-panel h3{font-size:16px;font-weight:800;margin-bottom:10px;}
+.event-details-panel p{font-size:14px;color:var(--text-l);line-height:1.7;}
+
+/* ── Event list cards ── */
+.sec-title{font-size:22px;font-weight:900;margin-bottom:6px;}
+.sec-sub{font-size:14px;color:var(--text-l);margin-bottom:22px;line-height:1.5;}
+.events-list{border-top:1px solid var(--border);}
+.eli{display:flex;gap:16px;padding:20px 0;border-bottom:1px solid var(--border);cursor:pointer;transition:background .1s;}
+.eli:hover{background:#fdf8f6;}
+.eli:hover .eli-title{color:var(--orange);}
+.eli-body{flex:1;min-width:0;}
+.eli-title{font-size:16px;font-weight:800;margin-bottom:5px;line-height:1.3;transition:color .15s;}
+.eli-date,.eli-loc,.eli-price{font-size:14px;color:var(--text-l);margin-bottom:3px;}
+.eli-promo{margin-top:5px;display:flex;align-items:center;gap:5px;font-size:12px;font-weight:700;color:var(--text-xl);letter-spacing:.5px;text-transform:uppercase;}
+.help-ico{width:14px;height:14px;border:1px solid currentColor;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:9px;cursor:pointer;}
+.promo-tooltip{position:relative;}
+.promo-tip-box{display:none;position:absolute;bottom:24px;left:50%;transform:translateX(-50%);background:#1E0A3C;color:#fff;font-size:12px;padding:8px 12px;border-radius:6px;width:220px;font-weight:400;line-height:1.5;z-index:10;text-align:left;}
+.promo-tip-box::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border:6px solid transparent;border-top-color:#1E0A3C;}
+.promo-tooltip:hover .promo-tip-box{display:block;}
+
+/*
+  ╔══════════════════════════════════════════════════════════╗
+  ║  HOW TO CHANGE EVENT CARD THUMBNAIL PHOTOS              ║
+  ║                                                          ║
+  ║  Each card below has an <img> tag inside .eli-thumb     ║
+  ║  Just replace the src="..." with your own photo URL     ║
+  ║  or local file path e.g. src="images/gala.jpg"         ║
+  ╚══════════════════════════════════════════════════════════╝
+*/
+.eli-thumb{width:120px;height:120px;border-radius:6px;flex-shrink:0;overflow:hidden;background:#eee;}
+.eli-thumb img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s;}
+.eli:hover .eli-thumb img{transform:scale(1.05);}
+
+/* ── Still looking ── */
+.still-looking{padding-top:32px;}
+.filter-chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px;}
+.chip{border:1px solid var(--border);border-radius:30px;padding:9px 18px;font-size:14px;font-weight:600;background:#fff;cursor:pointer;transition:all .15s;}
+.chip:hover{border-color:var(--orange);color:var(--orange);}
+
+/* ── Browse page ── */
+.browse-hero{background:linear-gradient(135deg,#1E0A3C,#4a1580);color:#fff;padding:48px 24px;}
+.browse-hero-inner{max-width:1280px;margin:0 auto;}
+.browse-hero h1{font-size:36px;font-weight:900;margin-bottom:16px;}
+.browse-search-bar{display:flex;background:#fff;border-radius:4px;overflow:hidden;max-width:640px;}
+.browse-search-bar input{flex:1;border:none;outline:none;padding:14px 16px;font-family:inherit;font-size:15px;color:var(--text);}
+.browse-search-bar button{background:var(--orange);border:none;color:#fff;padding:14px 22px;font-size:15px;font-weight:800;cursor:pointer;transition:background .15s;}
+.browse-search-bar button:hover{background:var(--orange-h);}
+.browse-content{max-width:1280px;margin:0 auto;padding:32px 24px 60px;}
+.browse-filters{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:28px;}
+.bfilter{border:1px solid var(--border);border-radius:30px;padding:8px 16px;font-size:13px;font-weight:700;cursor:pointer;background:#fff;color:var(--text);transition:all .15s;}
+.bfilter:hover,.bfilter.active{background:var(--text);color:#fff;border-color:var(--text);}
+.browse-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+.event-card-grid{background:#fff;border:1px solid var(--border);border-radius:8px;overflow:hidden;cursor:pointer;transition:box-shadow .2s,transform .2s;}
+.event-card-grid:hover{box-shadow:0 8px 32px rgba(0,0,0,.12);transform:translateY(-3px);}
+.ecg-img{height:180px;overflow:hidden;background:#eee;}
+.ecg-img img{width:100%;height:100%;object-fit:cover;transition:transform .3s;}
+.event-card-grid:hover .ecg-img img{transform:scale(1.05);}
+.ecg-body{padding:14px 16px 16px;}
+.ecg-tag{display:inline-block;background:#fef3c7;color:#92400e;font-size:11px;font-weight:700;padding:2px 8px;border-radius:12px;margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px;}
+.ecg-tag.free{background:#dcfce7;color:#14532d;}
+.ecg-title{font-size:15px;font-weight:800;margin-bottom:6px;line-height:1.3;}
+.ecg-date{font-size:13px;color:var(--text-l);margin-bottom:2px;}
+.ecg-loc{font-size:13px;color:var(--text-l);margin-bottom:8px;}
+.ecg-price{font-size:14px;font-weight:700;}
+
+/* ── Create page ── */
+.create-page{max-width:720px;margin:0 auto;padding:40px 24px 80px;}
+.create-page h1{font-size:30px;font-weight:900;margin-bottom:8px;}
+.create-page .sub{font-size:15px;color:var(--text-l);margin-bottom:32px;}
+.form-group{margin-bottom:22px;}
+.form-group label{display:block;font-size:14px;font-weight:700;margin-bottom:6px;}
+.form-group input,.form-group textarea,.form-group select{width:100%;border:1px solid var(--border);border-radius:4px;padding:12px 14px;font-family:inherit;font-size:14px;color:var(--text);outline:none;transition:border-color .15s;background:#fff;}
+.form-group input:focus,.form-group textarea:focus,.form-group select:focus{border-color:var(--orange);}
+.form-group textarea{resize:vertical;min-height:120px;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.ticket-section{background:#f8f7fa;border:1px solid var(--border);border-radius:8px;padding:20px;margin-bottom:22px;}
+.ticket-section h3{font-size:16px;font-weight:800;margin-bottom:16px;}
+.ticket-type{display:flex;align-items:center;gap:12px;padding:12px;background:#fff;border:1px solid var(--border);border-radius:6px;margin-bottom:10px;cursor:pointer;transition:border-color .15s;}
+.ticket-type:hover{border-color:var(--orange);}
+.ticket-type.selected{border-color:var(--orange);background:#fff8f6;}
+.submit-btn{width:100%;background:var(--orange);color:#fff;border:none;border-radius:4px;padding:15px;font-size:16px;font-weight:800;cursor:pointer;transition:background .15s;}
+.submit-btn:hover{background:var(--orange-h);}
+
+/* ── Tickets page ── */
+.tickets-page{max-width:860px;margin:0 auto;padding:40px 24px 80px;}
+.tickets-page h1{font-size:28px;font-weight:900;margin-bottom:24px;}
+.ticket-card{background:#fff;border:1px solid var(--border);border-radius:8px;overflow:hidden;display:flex;margin-bottom:16px;cursor:pointer;transition:box-shadow .2s;}
+.ticket-card:hover{box-shadow:0 6px 24px rgba(0,0,0,.1);}
+.tc-img{width:130px;flex-shrink:0;overflow:hidden;}
+.tc-img img{width:100%;height:100%;object-fit:cover;}
+.tc-body{padding:16px 20px;flex:1;}
+.tc-title{font-size:16px;font-weight:800;margin-bottom:4px;}
+.tc-date{font-size:13px;color:var(--text-l);margin-bottom:2px;}
+.tc-loc{font-size:13px;color:var(--text-l);margin-bottom:10px;}
+.tc-status{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:700;}
+.tc-status.upcoming{background:#dcfce7;color:#14532d;}
+.tc-status.ended{background:#f4f3f7;color:var(--text-l);}
+.tc-right{padding:16px;display:flex;flex-direction:column;align-items:flex-end;justify-content:center;gap:10px;border-left:1px solid var(--border);}
+.tc-price{font-size:16px;font-weight:800;}
+.view-ticket-btn{background:var(--orange);color:#fff;border:none;border-radius:4px;padding:8px 16px;font-size:13px;font-weight:700;cursor:pointer;}
+
+/* ── Help page ── */
+.help-page{max-width:860px;margin:0 auto;padding:40px 24px 80px;}
+.help-page h1{font-size:28px;font-weight:900;margin-bottom:8px;}
+.help-page .sub{color:var(--text-l);margin-bottom:32px;}
+.help-search{display:flex;border:1px solid var(--border);border-radius:4px;overflow:hidden;margin-bottom:32px;}
+.help-search input{flex:1;border:none;outline:none;padding:13px 16px;font-family:inherit;font-size:15px;}
+.help-search button{background:var(--orange);border:none;color:#fff;padding:13px 20px;font-size:14px;font-weight:700;cursor:pointer;}
+.help-cats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:32px;}
+.help-cat{background:#fff;border:1px solid var(--border);border-radius:8px;padding:20px;cursor:pointer;text-align:center;transition:all .15s;}
+.help-cat:hover{border-color:var(--orange);box-shadow:0 4px 16px rgba(0,0,0,.08);}
+.help-cat .hc-icon{font-size:32px;margin-bottom:8px;}
+.help-cat h3{font-size:14px;font-weight:800;}
+.help-cat p{font-size:12px;color:var(--text-l);margin-top:4px;}
+.faq-list{display:flex;flex-direction:column;gap:4px;}
+.faq-item{background:#fff;border:1px solid var(--border);border-radius:6px;overflow:hidden;}
+.faq-q{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;cursor:pointer;font-weight:700;font-size:15px;}
+.faq-q:hover{color:var(--orange);}
+.faq-arrow{transition:transform .2s;}
+.faq-item.open .faq-arrow{transform:rotate(180deg);}
+.faq-a{display:none;padding:0 16px 14px;font-size:14px;color:var(--text-l);line-height:1.7;}
+.faq-item.open .faq-a{display:block;}
+
+/* ── Modals ── */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:1000;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s;padding:16px;}
+.modal-overlay.open{opacity:1;pointer-events:all;}
+.modal-box{background:#fff;border-radius:12px;padding:32px;max-width:460px;width:100%;position:relative;transform:translateY(20px);transition:transform .2s;max-height:90vh;overflow-y:auto;}
+.modal-overlay.open .modal-box{transform:translateY(0);}
+.modal-close{position:absolute;top:14px;right:16px;background:none;border:none;font-size:22px;color:var(--text-l);cursor:pointer;}
+.modal-close:hover{color:var(--text);}
+.modal-title{font-size:22px;font-weight:900;margin-bottom:20px;}
+.signin-form .form-group{margin-bottom:16px;}
+.signin-form label{display:block;font-size:13px;font-weight:700;margin-bottom:5px;}
+.signin-form input{width:100%;border:1px solid var(--border);border-radius:4px;padding:11px 13px;font-family:inherit;font-size:14px;outline:none;transition:border-color .15s;}
+.signin-form input:focus{border-color:var(--orange);}
+.signin-btn{width:100%;background:var(--orange);color:#fff;border:none;border-radius:4px;padding:13px;font-size:15px;font-weight:800;cursor:pointer;margin-top:4px;transition:background .15s;}
+.signin-btn:hover{background:var(--orange-h);}
+.signin-divider{text-align:center;font-size:13px;color:var(--text-l);margin:16px 0;position:relative;}
+.signin-divider::before,.signin-divider::after{content:'';position:absolute;top:50%;width:calc(50% - 24px);height:1px;background:var(--border);}
+.signin-divider::before{left:0;} .signin-divider::after{right:0;}
+.google-btn{width:100%;border:1px solid var(--border);background:#fff;border-radius:4px;padding:12px;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:background .15s;}
+.google-btn:hover{background:#f8f7fa;}
+.signup-link{text-align:center;font-size:14px;margin-top:16px;color:var(--text-l);}
+.signup-link span{color:var(--orange);font-weight:700;cursor:pointer;}
+.share-url-box{display:flex;border:1px solid var(--border);border-radius:4px;overflow:hidden;margin-bottom:20px;}
+.share-url-box input{flex:1;border:none;outline:none;padding:10px 12px;font-size:13px;color:var(--text-l);}
+.share-url-box button{background:var(--orange);color:#fff;border:none;padding:10px 16px;font-size:13px;font-weight:700;cursor:pointer;}
+.share-options{display:flex;gap:12px;flex-wrap:wrap;}
+.share-opt{flex:1;min-width:80px;border:1px solid var(--border);border-radius:6px;padding:12px 8px;text-align:center;cursor:pointer;transition:all .15s;font-size:13px;font-weight:700;}
+.share-opt:hover{border-color:var(--orange);color:var(--orange);}
+.share-opt .sicon{font-size:24px;margin-bottom:4px;}
+
+/* ── Footer ── */
+footer{background:var(--footer);color:#c4b8e0;}
+.footer-top{max-width:1280px;margin:0 auto;padding:48px 24px 40px;display:grid;grid-template-columns:repeat(4,1fr);gap:32px;border-bottom:1px solid rgba(255,255,255,.1);}
+.fc-title{font-size:14px;font-weight:800;color:#fff;margin-bottom:14px;}
+.fc-link{display:block;font-size:13px;color:#9d8ec4;margin-bottom:9px;cursor:pointer;transition:color .15s;}
+.fc-link:hover{color:#fff;}
+.footer-bottom{max-width:1280px;margin:0 auto;padding:20px 24px 32px;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center;}
+.fb-links{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 16px;font-size:13px;color:#9d8ec4;}
+.fb-links span{cursor:pointer;} .fb-links span:hover{color:#fff;}
+.fb-sep{color:#4a3a6e;}
+.footer-brand{font-size:21px;font-weight:900;color:#fff;display:flex;gap:8px;align-items:center;}
+.footer-brand .pipe{color:#4a3a6e;font-weight:300;}
+.footer-brand .sub{font-size:14px;font-weight:400;color:#9d8ec4;}
+.footer-copy{font-size:13px;color:#6b5d8e;}
+
+/* ── Mobile bottom bar ── */
+.mob-bar{display:none;position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--border);padding:12px 16px 18px;align-items:center;justify-content:space-between;z-index:300;box-shadow:0 -4px 16px rgba(0,0,0,.09);}
+.mb-label{font-size:13px;font-weight:800;}
+.mb-date{font-size:12px;color:var(--text-l);}
+.mb-btn{background:var(--orange);color:#fff;border:none;border-radius:4px;padding:13px 20px;font-size:15px;font-weight:800;cursor:pointer;font-family:inherit;transition:background .15s;}
+.mb-btn:hover{background:var(--orange-h);}
+
+/* ── Responsive ── */
+@media(max-width:1024px){.page-wrap{grid-template-columns:1fr 280px;gap:28px;}.nav-link.hide-md{display:none;}.browse-grid{grid-template-columns:repeat(2,1fr);}.help-cats{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:768px){
+  .navbar-inner{padding:0 16px;}.nav-search,.nav-links{display:none;}.hamburger{display:block;}
+  .hero-img{height:220px;}
+  .page-wrap{grid-template-columns:1fr;padding:16px 16px 90px;gap:0;}.sidebar{display:none;}.mob-bar{display:flex;}
+  .event-title{font-size:22px;}.sec-title{font-size:18px;}
+  .eli-thumb{width:96px;height:96px;}
+  .footer-top{grid-template-columns:1fr 1fr;padding:32px 16px 28px;gap:20px;}.footer-bottom{padding:18px 16px 28px;}
+  .browse-grid{grid-template-columns:1fr;}.form-row{grid-template-columns:1fr;}.help-cats{grid-template-columns:1fr 1fr;}.tc-img{width:90px;}
+}
+@media(max-width:420px){.footer-top{grid-template-columns:1fr;}.event-title{font-size:20px;}.help-cats{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+
+<div id="toast"></div>
+<div class="mobile-menu" id="mobileMenu">
+  <button class="mm-close" onclick="closeMobileMenu()">✕</button>
+  <div class="mm-search"><input type="text" id="mmSearchInput" placeholder="Search events…"><button onclick="doSearch()">🔍</button></div>
+  <div class="mm-links">
+    <div class="mm-link" onclick="navigate('browse');closeMobileMenu()">Find Events</div>
+    <div class="mm-link" onclick="navigate('create');closeMobileMenu()">Create Events</div>
+    <div class="mm-link" onclick="navigate('help');closeMobileMenu()">Help Center</div>
+    <div class="mm-link" onclick="navigate('tickets');closeMobileMenu()">Find My Tickets</div>
+  </div>
+  <button class="mm-signin" onclick="openModal('signinModal');closeMobileMenu()">Sign In</button>
+</div>
+
+<nav class="navbar">
+  <div class="navbar-inner">
+    <span class="nav-logo" onclick="navigate('home')">EventsKenya</span>
+    <div class="nav-search">
+      <div class="search-kw">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6F7287" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" id="navSearchInput" placeholder="Search events" onkeydown="if(event.key==='Enter')doSearch()">
+      </div>
+      <div class="search-loc">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6F7287" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+        <input type="text" value="Nairobi">
+      </div>
+      <button class="search-btn" onclick="doSearch()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </button>
+    </div>
+    <div class="nav-links">
+      <span class="nav-link hide-md" onclick="showToast('No new updates right now')">Updates</span>
+      <span class="nav-link" onclick="navigate('browse')">Find Events</span>
+      <span class="nav-link hide-md" onclick="navigate('create')">Create Events</span>
+      <span class="nav-link hide-md" onclick="navigate('help')">Help Center ▾</span>
+      <span class="nav-link" onclick="navigate('tickets')">Find my tickets</span>
+      <span class="nav-link signin" id="signinNavBtn" onclick="openModal('signinModal')">Sign in</span>
+    </div>
+    <button class="hamburger" onclick="openMobileMenu()">☰</button>
+  </div>
+</nav>
+
+<!-- ================================================================
+     PAGE: HOME
+================================================================ -->
+<div class="page active" id="page-home">
+
+  <div class="hero-wrap">
+    <!--
+    ┌─────────────────────────────────────────────────────────────┐
+    │  HERO BANNER PHOTO                                          │
+    │  Currently showing: Unsplash food market photo              │
+    │                                                             │
+    │  TO CHANGE IT:                                              │
+    │  Replace the URL in src="..." with:                         │
+    │    • Your own photo URL from the web                        │
+    │    • A local file: src="my-photo.jpg"                       │
+    │    • A free Unsplash URL: unsplash.com → copy image link    │
+    └─────────────────────────────────────────────────────────────┘
+    -->
+    <img class="hero-img"
+      src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=1400&q=80&auto=format&fit=crop"
+      alt="2026 Nairobi Summer Farmers Market"
+      onerror="this.style.background='linear-gradient(135deg,#2c1005,#7a4010,#3d7010)';this.style.display='block';this.style.height='440px';this.removeAttribute('src');">
+  </div>
+
+  <div class="page-wrap">
+    <div class="main-col">
+
+      <div class="status-row">
+        <div class="ended-badge"><span class="badge-i">i</span> EVENT ENDED</div>
+        <div class="action-btns">
+          <button class="act-btn" onclick="openModal('shareModal')" title="Share">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+          </button>
+          <button class="act-btn" id="saveBtn" onclick="toggleSave()" title="Save">
+            <svg id="heartIcon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <h1 class="event-title">2026 Nairobi Summer Farmers Market</h1>
+
+      <div class="org-row">
+        <div class="org-avatar">
+          <!--
+          ORGANISER AVATAR PHOTO
+          Replace the src below with your organiser's photo
+          e.g. src="organiser.jpg" or a URL from the web
+          -->
+          <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=96&q=80&auto=format&fit=crop&crop=face"
+               alt="Organiser"
+               onerror="this.style.display='none'">
+        </div>
+        <div class="org-details">
+          <div class="org-by">by <span class="org-name" onclick="showToast('Viewing Nairobi Market Collective profile…')">Nairobi Market Collective</span></div>
+          <div class="org-stats">24 followers &nbsp;•&nbsp; 1 event &nbsp;•&nbsp; 89 total attendees</div>
+        </div>
+        <button class="follow-btn" id="followBtn" onclick="toggleFollow()">Follow</button>
+      </div>
+
+      <div class="event-meta">
+        <div class="meta-row">
+          <span class="meta-ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6F7287" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></span>
+          <span><a class="meta-link" onclick="openMapsNairobi()">Ngong Racecourse</a> &nbsp;·&nbsp; Nairobi, Kenya</span>
+        </div>
+        <div class="meta-row">
+          <span class="meta-ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6F7287" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></span>
+          <span>Friday, May 1–Sunday, May 3 &nbsp;•&nbsp; 8 AM–4 PM</span>
+        </div>
+      </div>
+
+      <div class="view-wrap">
+        <button class="view-btn" onclick="toggleEventDetails()">View all event details</button>
+      </div>
+      <div class="event-details-panel" id="eventDetailsPanel">
+        <h3>About this event</h3>
+        <p>The Nairobi Summer Farmers Market is your go-to destination for fresh, locally sourced produce, artisan foods, and handcrafted goods. Held at the iconic Ngong Racecourse, this multi-day market brings together over 80 vendors from across Kenya.<br><br>Expect fresh fruits, vegetables, artisan cheeses, live cooking demos by top Nairobi chefs, children's activities, and free parking on site.</p>
+      </div>
+
+      <h2 class="sec-title">More Food &amp; Drink events</h2>
+      <p class="sec-sub">Browse more Food &amp; Drink events with different dates, prices, and formats to find your next great experience.</p>
+
+      <div class="events-list">
+
+        <!--
+        ┌──────────────────────────────────────────────────────┐
+        │  EVENT CARD 1 PHOTO                                  │
+        │  Currently: Unsplash gala/banquet photo              │
+        │  To change: replace src="..." with your photo URL   │
+        └──────────────────────────────────────────────────────┘
+        -->
+        <div class="eli" onclick="navigate('browse')">
+          <div class="eli-body">
+            <div class="eli-title">Nairobi Food &amp; Wine Gala — Madaraka Weekend Kickoff</div>
+            <div class="eli-date">Sat, May 31 • 7:00 PM</div>
+            <div class="eli-loc">Radisson Blu Hotel, Upper Hill</div>
+            <div class="eli-price">Starts at KES 2,500</div>
+            <div class="eli-promo">PROMOTED
+              <div class="promo-tooltip"><span class="help-ico">?</span><div class="promo-tip-box">This is a paid promotion. EventsKenya shows promoted events to help you discover relevant experiences.</div></div>
+            </div>
+          </div>
+          <div class="eli-thumb">
+            <img src="https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=240&q=80&auto=format&fit=crop"
+                 alt="Nairobi Food & Wine Gala"
+                 onerror="this.parentElement.style.background='#ddd';this.remove()">
+          </div>
+        </div>
+
+        <!--
+        ┌──────────────────────────────────────────────────────┐
+        │  EVENT CARD 2 PHOTO                                  │
+        │  Currently: Unsplash farmers market photo            │
+        │  To change: replace src="..." with your photo URL   │
+        └──────────────────────────────────────────────────────┘
+        -->
+        <div class="eli" onclick="navigate('browse')">
+          <div class="eli-body">
+            <div class="eli-title">2026 Nairobi Summer Weekend Farmers Market</div>
+            <div class="eli-date">Fri, June 27 • 8:00 AM</div>
+            <div class="eli-loc">Karura Forest Gate • Nairobi, Kenya</div>
+            <div class="eli-price">Free</div>
+          </div>
+          <div class="eli-thumb">
+            <img src="https://images.unsplash.com/photo-1488459716781-31db52582fe9?w=240&q=80&auto=format&fit=crop"
+                 alt="Nairobi Weekend Farmers Market"
+                 onerror="this.parentElement.style.background='#ddd';this.remove()">
+          </div>
+        </div>
+
+        <!--
+        ┌──────────────────────────────────────────────────────┐
+        │  EVENT CARD 3 PHOTO                                  │
+        │  Currently: Unsplash restaurant/plated food photo   │
+        │  To change: replace src="..." with your photo URL   │
+        └──────────────────────────────────────────────────────┘
+        -->
+        <div class="eli" onclick="navigate('browse')">
+          <div class="eli-body">
+            <div class="eli-title">Mama Oliech Restaurant — Sunday Brunch Special</div>
+            <div class="eli-date">Sat, May 24 • 11:00 AM</div>
+            <div class="eli-loc">Hurlingham, Nairobi</div>
+            <div class="eli-price">Starts at KES 800</div>
+            <div class="eli-promo">PROMOTED
+              <div class="promo-tooltip"><span class="help-ico">?</span><div class="promo-tip-box">This is a paid promotion. EventsKenya shows promoted events to help you discover relevant experiences.</div></div>
+            </div>
+          </div>
+          <div class="eli-thumb">
+            <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=240&q=80&auto=format&fit=crop"
+                 alt="Mama Oliech Brunch"
+                 onerror="this.parentElement.style.background='#ddd';this.remove()">
+          </div>
+        </div>
+
+        <!--
+        ┌──────────────────────────────────────────────────────┐
+        │  EVENT CARD 4 PHOTO                                  │
+        │  Currently: Unsplash outdoor market photo            │
+        │  To change: replace src="..." with your photo URL   │
+        └──────────────────────────────────────────────────────┘
+        -->
+        <div class="eli" onclick="navigate('browse')">
+          <div class="eli-body">
+            <div class="eli-title">2026 Nairobi Summer Farmers and Makers Market</div>
+            <div class="eli-date">Fri, June 6 • 8:00 AM</div>
+            <div class="eli-loc">Ngong Road • Nairobi, Kenya</div>
+            <div class="eli-price">Free</div>
+          </div>
+          <div class="eli-thumb">
+            <img src="https://images.unsplash.com/photo-1542838132-92c53300491e?w=240&q=80&auto=format&fit=crop"
+                 alt="Nairobi Farmers and Makers Market"
+                 onerror="this.parentElement.style.background='#ddd';this.remove()">
+          </div>
+        </div>
+
+      </div>
+
+      <div class="still-looking">
+        <h2 class="sec-title">Still looking for the right event?</h2>
+        <p class="sec-sub">Explore all events in Nairobi and filter by date, category, and more to find the perfect fit.</p>
+        <div class="filter-chips">
+          <span class="chip" onclick="filterBrowse('Kenya')">Kenya Events</span>
+          <span class="chip" onclick="filterBrowse('Nairobi')">Nairobi Events</span>
+          <span class="chip" onclick="filterBrowse('Nairobi')">Things to do in Nairobi, Kenya</span>
+          <span class="chip" onclick="filterBrowse('Festival')">Nairobi festivals</span>
+          <span class="chip" onclick="filterBrowse('Food')">Nairobi Food &amp; Drink festivals</span>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="sidebar">
+      <div class="sidebar-box">
+        <div class="sb-label">Sales ended</div>
+        <div class="sb-sub">May 1–3</div>
+        <button class="sb-btn" onclick="navigate('browse')">Explore similar events</button>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-top">
+      <div><div class="fc-title">Use EventsKenya</div><a class="fc-link" onclick="navigate('help')">How it Works</a><a class="fc-link" onclick="showToast('Opening Pricing…')">Pricing</a><a class="fc-link" onclick="showToast('Opening Event Blog…')">Event Blog</a></div>
+      <div><div class="fc-title">Plan Events</div><a class="fc-link" onclick="navigate('create')">Conference Management</a><a class="fc-link" onclick="navigate('create')">M-Pesa Ticketing</a><a class="fc-link" onclick="navigate('create')">Nonprofits &amp; Fundraisers</a><a class="fc-link" onclick="navigate('create')">Sell Tickets Online</a><a class="fc-link" onclick="navigate('create')">Online Event Registration</a><a class="fc-link" onclick="navigate('create')">Online RSVP</a><a class="fc-link" onclick="navigate('create')">Music Venues &amp; Promoters</a></div>
+      <div><div class="fc-title">Find Events</div><a class="fc-link" onclick="navigate('browse')">Browse Online Events</a><a class="fc-link" onclick="showToast('Redirecting to App Store…')">Get the EventsKenya App</a></div>
+      <div><div class="fc-title">Connect With Us</div><a class="fc-link" onclick="showToast('Opening report form…')">Report this event</a><a class="fc-link" onclick="navigate('help')">Help Center</a><a class="fc-link" onclick="showToast('Opening Terms…')">Terms</a><a class="fc-link" onclick="showToast('Opening Privacy Policy…')">Privacy</a><a class="fc-link" onclick="navigate('help')">Community Guidelines</a></div>
+    </div>
+    <div class="footer-bottom">
+      <div class="fb-links"><span onclick="showToast('Managing cookies…')">Manage Cookie Preferences</span><span class="fb-sep">•</span><span onclick="showToast('Opening privacy settings…')">Do Not Sell or Share My Personal Information</span><span class="fb-sep">•</span><span onclick="showToast('Opening Privacy Policy…')">Privacy</span></div>
+      <div class="footer-brand"><span>EventsKenya</span><span class="pipe">|</span><span class="sub">TicketKE</span></div>
+      <div class="footer-copy">© 2026 EventsKenya. All rights reserved.</div>
+    </div>
+  </footer>
+  <div class="mob-bar"><div><div class="mb-label">Sales ended</div><div class="mb-date">May 1–3</div></div><button class="mb-btn" onclick="navigate('browse')">Explore similar events</button></div>
+</div>
+
+<!-- ================================================================ BROWSE ================================================================ -->
+<div class="page" id="page-browse">
+  <div class="browse-hero"><div class="browse-hero-inner"><h1>Find Events in Kenya 🇰🇪</h1><p style="opacity:.8;margin-bottom:20px;">Concerts, markets, sports, food, festivals &amp; more</p><div class="browse-search-bar"><input type="text" id="browseSearchInput" placeholder="Search events, artists, venues…" onkeydown="if(event.key==='Enter')applyBrowseSearch()"><button onclick="applyBrowseSearch()">Search</button></div></div></div>
+  <div class="browse-content">
+    <div class="browse-filters">
+      <span class="bfilter active" onclick="setFilter(this,'All')">All</span>
+      <span class="bfilter" onclick="setFilter(this,'Food')">🍽 Food &amp; Drink</span>
+      <span class="bfilter" onclick="setFilter(this,'Music')">🎵 Music</span>
+      <span class="bfilter" onclick="setFilter(this,'Sports')">⚽ Sports</span>
+      <span class="bfilter" onclick="setFilter(this,'Festival')">🎪 Festivals</span>
+      <span class="bfilter" onclick="setFilter(this,'Business')">💼 Business</span>
+      <span class="bfilter" onclick="setFilter(this,'Free')">🎁 Free</span>
+    </div>
+    <div class="browse-grid" id="browseGrid"></div>
+    <p id="noResults" style="display:none;text-align:center;color:#6F7287;padding:40px;font-size:16px;">No events found. Try a different search or category.</p>
+  </div>
+  <footer><div class="footer-top"><div><div class="fc-title">Use EventsKenya</div><a class="fc-link" onclick="navigate('help')">How it Works</a><a class="fc-link">Pricing</a></div><div><div class="fc-title">Plan Events</div><a class="fc-link" onclick="navigate('create')">Create an Event</a><a class="fc-link" onclick="navigate('create')">Sell Tickets</a></div><div><div class="fc-title">Find Events</div><a class="fc-link" onclick="navigate('browse')">Browse Events</a></div><div><div class="fc-title">Connect</div><a class="fc-link" onclick="navigate('help')">Help Center</a><a class="fc-link">Privacy</a></div></div><div class="footer-bottom"><div class="footer-brand"><span>EventsKenya</span><span class="pipe">|</span><span class="sub">TicketKE</span></div><div class="footer-copy">© 2026 EventsKenya. All rights reserved.</div></div></footer>
+</div>
+
+<!-- ================================================================ CREATE ================================================================ -->
+<div class="page" id="page-create">
+  <div class="create-page">
+    <h1>Create Your Event</h1><p class="sub">List your event on EventsKenya and reach thousands of Kenyans. Free to list!</p>
+    <div class="form-group"><label>Event Title *</label><input type="text" placeholder="e.g. 2026 Nairobi Jazz Night"></div>
+    <div class="form-group"><label>Category *</label><select><option>Select a category</option><option>Food &amp; Drink</option><option>Music &amp; Concerts</option><option>Sports &amp; Fitness</option><option>Arts &amp; Culture</option><option>Business &amp; Networking</option><option>Festivals &amp; Fairs</option><option>Outdoor &amp; Adventure</option><option>Education &amp; Training</option></select></div>
+    <div class="form-group"><label>Event Description *</label><textarea placeholder="Tell attendees what to expect…"></textarea></div>
+    <div class="form-row"><div class="form-group"><label>Start Date &amp; Time *</label><input type="datetime-local"></div><div class="form-group"><label>End Date &amp; Time *</label><input type="datetime-local"></div></div>
+    <div class="form-group"><label>Venue / Location *</label><input type="text" placeholder="e.g. Ngong Racecourse, Nairobi"></div>
+    <div class="form-group"><label>Cover Photo URL</label><input type="url" placeholder="https://… paste a photo link here"></div>
+    <div class="ticket-section"><h3>Ticket Type</h3>
+      <div class="ticket-type selected" onclick="selectTicket(this)"><input type="radio" name="ticket" checked><div><strong>Free Event</strong><br><small style="color:#6F7287">No charge for attendees</small></div></div>
+      <div class="ticket-type" onclick="selectTicket(this)"><input type="radio" name="ticket"><div><strong>Paid Tickets</strong><br><small style="color:#6F7287">Set a price + collect M-Pesa payments</small></div></div>
+      <div class="ticket-type" onclick="selectTicket(this)"><input type="radio" name="ticket"><div><strong>Donation</strong><br><small style="color:#6F7287">Attendees donate any amount</small></div></div>
+    </div>
+    <div class="form-group"><label>Organiser Name *</label><input type="text" placeholder="Your name or organisation"></div>
+    <div class="form-group"><label>Contact Email *</label><input type="email" placeholder="you@example.com"></div>
+    <div class="form-group"><label>M-Pesa Till / Paybill (for paid events)</label><input type="text" placeholder="e.g. 625362"></div>
+    <button class="submit-btn" onclick="submitEvent()">Publish Event →</button>
+  </div>
+</div>
+
+<!-- ================================================================ TICKETS ================================================================ -->
+<div class="page" id="page-tickets">
+  <div class="tickets-page">
+    <h1>My Tickets</h1>
+    <!--
+    TICKET CARD PHOTOS — replace each src with your event's photo
+    -->
+    <div class="ticket-card">
+      <div class="tc-img"><img src="https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=200&q=80&auto=format&fit=crop" alt="Gala"></div>
+      <div class="tc-body"><div class="tc-title">Nairobi Food &amp; Wine Gala 2026</div><div class="tc-date">Sat, May 31, 2026 • 7:00 PM</div><div class="tc-loc">📍 Radisson Blu Hotel, Upper Hill, Nairobi</div><div class="tc-status upcoming">● Upcoming</div></div>
+      <div class="tc-right"><div class="tc-price">KES 2,500</div><button class="view-ticket-btn" onclick="showToast('Downloading your ticket PDF…')">View Ticket</button></div>
+    </div>
+    <div class="ticket-card">
+      <div class="tc-img"><img src="https://images.unsplash.com/photo-1488459716781-31db52582fe9?w=200&q=80&auto=format&fit=crop" alt="Market"></div>
+      <div class="tc-body"><div class="tc-title">2026 Nairobi Summer Farmers Market</div><div class="tc-date">Fri, May 1 – Sun, May 3, 2026</div><div class="tc-loc">📍 Ngong Racecourse, Nairobi</div><div class="tc-status ended">● Event Ended</div></div>
+      <div class="tc-right"><div class="tc-price">Free</div><button class="view-ticket-btn" onclick="showToast('Showing ticket confirmation…')">View Ticket</button></div>
+    </div>
+    <div style="text-align:center;margin-top:32px;"><p style="color:#6F7287;font-size:15px;margin-bottom:16px;">Can't find your ticket? Sign in to see all your bookings.</p><button style="background:var(--orange);color:#fff;border:none;border-radius:4px;padding:12px 28px;font-size:15px;font-weight:800;cursor:pointer;" onclick="openModal('signinModal')">Sign In to view all tickets</button></div>
+  </div>
+</div>
+
+<!-- ================================================================ HELP ================================================================ -->
+<div class="page" id="page-help">
+  <div class="help-page">
+    <h1>Help Center</h1><p class="sub">How can we help you today?</p>
+    <div class="help-search"><input type="text" placeholder="Search for answers…"><button onclick="showToast('Searching help articles…')">Search</button></div>
+    <div class="help-cats">
+      <div class="help-cat" onclick="showToast('Opening: Buying Tickets')"><div class="hc-icon">🎟️</div><h3>Buying Tickets</h3><p>Registration, M-Pesa payment, confirmations</p></div>
+      <div class="help-cat" onclick="showToast('Opening: Creating Events')"><div class="hc-icon">📅</div><h3>Creating Events</h3><p>Set up your event, manage attendees</p></div>
+      <div class="help-cat" onclick="showToast('Opening: Managing Tickets')"><div class="hc-icon">📲</div><h3>Managing Tickets</h3><p>Transfer, refund, or cancel tickets</p></div>
+      <div class="help-cat" onclick="showToast('Opening: Payments')"><div class="hc-icon">💳</div><h3>Payments &amp; Payouts</h3><p>M-Pesa, invoices, payout schedule</p></div>
+      <div class="help-cat" onclick="showToast('Opening: Account Settings')"><div class="hc-icon">⚙️</div><h3>Account &amp; Settings</h3><p>Profile, notifications, privacy</p></div>
+      <div class="help-cat" onclick="showToast('Opening: Trust & Safety')"><div class="hc-icon">🛡️</div><h3>Trust &amp; Safety</h3><p>Report fraud, event policies</p></div>
+    </div>
+    <h2 class="sec-title" style="margin-bottom:16px;">Frequently Asked Questions</h2>
+    <div class="faq-list">
+      <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-q">How do I buy a ticket? <span class="faq-arrow">▼</span></div><div class="faq-a">Find the event you want, click on it, then click "Get Tickets." You'll pay via M-Pesa STK Push — a prompt will be sent to your phone. Confirm payment and your ticket will be emailed instantly.</div></div>
+      <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-q">Can I get a refund? <span class="faq-arrow">▼</span></div><div class="faq-a">Refund policies are set by event organizers. Check the event page for the refund policy. If the event was cancelled, you will receive an automatic M-Pesa refund within 5–7 business days.</div></div>
+      <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-q">How do I list a free event? <span class="faq-arrow">▼</span></div><div class="faq-a">Listing a free event on EventsKenya is 100% free. Click "Create Events" in the navigation, fill out the form, and publish. Your event goes live immediately.</div></div>
+      <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-q">What payment methods are accepted? <span class="faq-arrow">▼</span></div><div class="faq-a">We accept M-Pesa (Safaricom), Airtel Money, and major debit/credit cards. M-Pesa is the most popular and fastest payment method on our platform.</div></div>
+      <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-q">How do organizers receive payouts? <span class="faq-arrow">▼</span></div><div class="faq-a">Organizers receive payouts via M-Pesa or bank transfer within 3 business days after the event ends. Track your earnings in your organizer dashboard.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ================================================================ MODALS ================================================================ -->
+<div class="modal-overlay" id="signinModal" onclick="closeModalOnOverlay(event,'signinModal')">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('signinModal')">✕</button>
+    <div class="modal-title">Sign in to EventsKenya</div>
+    <div class="signin-form">
+      <div class="form-group"><label>Email address</label><input type="email" id="signinEmail" placeholder="you@example.com"></div>
+      <div class="form-group"><label>Password</label><input type="password" id="signinPass" placeholder="••••••••"></div>
+      <button class="signin-btn" onclick="doSignIn()">Sign in</button>
+      <div class="signin-divider">or</div>
+      <button class="google-btn" onclick="showToast('Signing in with Google…')"><svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>Continue with Google</button>
+      <div class="signin-divider">or</div>
+      <button class="google-btn" onclick="showToast('Signing in with phone number…')">📱 Continue with Phone Number</button>
+      <div class="signup-link">Don't have an account? <span onclick="showToast('Opening sign-up form…')">Sign up</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="shareModal" onclick="closeModalOnOverlay(event,'shareModal')">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('shareModal')">✕</button>
+    <div class="modal-title">Share this event</div>
+    <div class="share-url-box"><input type="text" id="shareUrl" value="https://eventskenya.co.ke/e/2026-nairobi-summer-farmers-market" readonly><button onclick="copyShareUrl()">Copy</button></div>
+    <div class="share-options">
+      <div class="share-opt" onclick="shareVia('WhatsApp')"><div class="sicon">💬</div>WhatsApp</div>
+      <div class="share-opt" onclick="shareVia('Twitter')"><div class="sicon">🐦</div>Twitter/X</div>
+      <div class="share-opt" onclick="shareVia('Facebook')"><div class="sicon">📘</div>Facebook</div>
+      <div class="share-opt" onclick="shareVia('Email')"><div class="sicon">📧</div>Email</div>
+      <div class="share-opt" onclick="shareVia('SMS')"><div class="sicon">📱</div>SMS</div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── Navigation ──
+function navigate(page){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById('page-'+page).classList.add('active');window.scrollTo({top:0,behavior:'smooth'});if(page==='browse')renderBrowseGrid(allEvents,'');}
+
+// ── Toast ──
+let toastTimer;
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),2800);}
+
+// ── Modals ──
+function openModal(id){document.getElementById(id).classList.add('open');}
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+function closeModalOnOverlay(e,id){if(e.target.id===id)closeModal(id);}
+
+// ── Mobile menu ──
+function openMobileMenu(){document.getElementById('mobileMenu').classList.add('open');}
+function closeMobileMenu(){document.getElementById('mobileMenu').classList.remove('open');}
+
+// ── Search ──
+function doSearch(){const q=document.getElementById('navSearchInput').value.trim()||document.getElementById('mmSearchInput').value.trim()||'';navigate('browse');setTimeout(()=>{document.getElementById('browseSearchInput').value=q;applyBrowseSearch();},100);}
+function applyBrowseSearch(){const q=document.getElementById('browseSearchInput').value.toLowerCase();renderBrowseGrid(allEvents.filter(e=>e.title.toLowerCase().includes(q)||e.loc.toLowerCase().includes(q)||e.tag.toLowerCase().includes(q)),q);}
+function filterBrowse(cat){navigate('browse');setTimeout(()=>{document.getElementById('browseSearchInput').value=cat;applyBrowseSearch();},100);}
+
+// ── Browse filters ──
+function setFilter(el,cat){document.querySelectorAll('.bfilter').forEach(b=>b.classList.remove('active'));el.classList.add('active');renderBrowseGrid(cat==='All'?allEvents:allEvents.filter(e=>e.tag===cat||(cat==='Free'&&e.price==='Free')),'');}
+
+// ── Event data (each entry has a real Unsplash photo) ──
+/*
+  HOW TO ADD YOUR OWN PHOTOS TO BROWSE CARDS:
+  Each event object below has an "img" field.
+  Replace the Unsplash URL with your own photo URL or local path.
+  e.g.  img: 'images/jazz-night.jpg'
+*/
+const allEvents=[
+  {title:'Nairobi Jazz Festival 2026',date:'Sat, Jun 7 • 6:00 PM',loc:'Uhuru Gardens, Nairobi',price:'From KES 1,500',tag:'Music',img:'https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?w=400&q=80&auto=format&fit=crop'},
+  {title:'Nairobi Food & Wine Gala — Madaraka Weekend',date:'Sat, May 31 • 7:00 PM',loc:'Radisson Blu Hotel, Upper Hill',price:'From KES 2,500',tag:'Food',img:'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=400&q=80&auto=format&fit=crop'},
+  {title:'2026 Nairobi Summer Weekend Farmers Market',date:'Fri, Jun 27 • 8:00 AM',loc:'Karura Forest Gate, Nairobi',price:'Free',tag:'Food',img:'https://images.unsplash.com/photo-1488459716781-31db52582fe9?w=400&q=80&auto=format&fit=crop'},
+  {title:'AFC Leopards vs Gor Mahia — Derby Day',date:'Sun, May 10 • 3:00 PM',loc:'Kasarani Stadium, Nairobi',price:'From KES 500',tag:'Sports',img:'https://images.unsplash.com/photo-1522778119026-d647f0596c20?w=400&q=80&auto=format&fit=crop'},
+  {title:'Nairobi Half Marathon 2026',date:'Sun, Jun 22 • 6:00 AM',loc:'Nyayo National Stadium, Nairobi',price:'From KES 1,500',tag:'Sports',img:'https://images.unsplash.com/photo-1571008887538-b36bb32f4571?w=400&q=80&auto=format&fit=crop'},
+  {title:'Nairobi Art Week 2026',date:'Sat–Sun, May 17–18',loc:'Village Market, Nairobi',price:'Free',tag:'Festival',img:'https://images.unsplash.com/photo-1549490349-8643362247b5?w=400&q=80&auto=format&fit=crop'},
+  {title:'Kenya Coffee Expo 2026',date:'Mon, Jun 15 • 9:00 AM',loc:'KICC, Nairobi',price:'From KES 500',tag:'Business',img:'https://images.unsplash.com/photo-1511537190424-bbbab87ac5eb?w=400&q=80&auto=format&fit=crop'},
+  {title:'Afrobeats Night — Club X Westlands',date:'Sat, May 9 • 9:00 PM',loc:'Westlands, Nairobi',price:'From KES 1,000',tag:'Music',img:'https://images.unsplash.com/photo-1429962714451-bb934ecdc4ec?w=400&q=80&auto=format&fit=crop'},
+  {title:'Mama Oliech Sunday Brunch Special',date:'Sat, May 24 • 11:00 AM',loc:'Hurlingham, Nairobi',price:'From KES 800',tag:'Food',img:'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&q=80&auto=format&fit=crop'},
+  {title:'Tech Startup Summit Nairobi 2026',date:'Thu, Jun 12 • 8:00 AM',loc:'Strathmore University, Nairobi',price:'From KES 3,000',tag:'Business',img:'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=400&q=80&auto=format&fit=crop'},
+  {title:'Nyama Choma Fest — Mombasa Edition',date:'Sat, Jun 20 • 12:00 PM',loc:'Haller Park, Mombasa',price:'From KES 800',tag:'Food',img:'https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?w=400&q=80&auto=format&fit=crop'},
+  {title:'2026 Nairobi Farmers and Makers Market',date:'Fri, Jun 6 • 8:00 AM',loc:'Ngong Road, Nairobi',price:'Free',tag:'Festival',img:'https://images.unsplash.com/photo-1542838132-92c53300491e?w=400&q=80&auto=format&fit=crop'},
+];
+
+function renderBrowseGrid(events,q){
+  const grid=document.getElementById('browseGrid');
+  const noRes=document.getElementById('noResults');
+  if(!events.length){grid.innerHTML='';noRes.style.display='block';return;}
+  noRes.style.display='none';
+  grid.innerHTML=events.map(e=>`
+    <div class="event-card-grid" onclick="showToast('Opening: ${e.title.substring(0,28)}…')">
+      <div class="ecg-img">
+        <img src="${e.img}" alt="${e.title}"
+             onerror="this.parentElement.style.background='#ddd';this.remove()">
+      </div>
+      <div class="ecg-body">
+        <div class="ecg-tag ${e.price==='Free'?'free':''}">${e.price==='Free'?'Free':e.tag}</div>
+        <div class="ecg-title">${e.title}</div>
+        <div class="ecg-date">${e.date}</div>
+        <div class="ecg-loc">📍 ${e.loc}</div>
+        <div class="ecg-price">${e.price}</div>
+      </div>
+    </div>`).join('');
+}
+
+// ── Home page ──
+let saved=false;
+function toggleSave(){saved=!saved;const icon=document.getElementById('heartIcon');icon.setAttribute('fill',saved?'#E05020':'none');icon.setAttribute('stroke',saved?'#E05020':'currentColor');showToast(saved?'❤️ Event saved to your list!':'Removed from saved events');}
+
+let following=false;
+function toggleFollow(){following=!following;const btn=document.getElementById('followBtn');btn.textContent=following?'Following ✓':'Follow';btn.classList.toggle('following',following);showToast(following?'✅ Now following Nairobi Market Collective':'Unfollowed Nairobi Market Collective');}
+
+let detailsOpen=false;
+function toggleEventDetails(){detailsOpen=!detailsOpen;const panel=document.getElementById('eventDetailsPanel');panel.classList.toggle('open',detailsOpen);document.querySelector('.view-btn').textContent=detailsOpen?'Hide event details ▲':'View all event details';if(detailsOpen)panel.scrollIntoView({behavior:'smooth',block:'nearest'});}
+
+function openMapsNairobi(){window.open('https://maps.google.com/?q=Ngong+Racecourse+Nairobi+Kenya','_blank');}
+
+// ── Share ──
+function copyShareUrl(){document.getElementById('shareUrl').select();try{document.execCommand('copy');}catch(e){}showToast('🔗 Link copied to clipboard!');}
+function shareVia(p){const url=encodeURIComponent('https://eventskenya.co.ke/e/2026-nairobi-summer-farmers-market');const text=encodeURIComponent('Check out the 2026 Nairobi Summer Farmers Market on EventsKenya!');const links={WhatsApp:`https://wa.me/?text=${text}%20${url}`,Twitter:`https://twitter.com/intent/tweet?text=${text}&url=${url}`,Facebook:`https://www.facebook.com/sharer/sharer.php?u=${url}`,Email:`mailto:?subject=Check%20out%20this%20event&body=${text}%20${url}`,SMS:`sms:?body=${text}%20${url}`};window.open(links[p],'_blank');closeModal('shareModal');}
+
+// ── Sign in ──
+function doSignIn(){const e=document.getElementById('signinEmail').value,p=document.getElementById('signinPass').value;if(!e||!p){showToast('⚠️ Please enter your email and password');return;}showToast('✅ Signed in successfully!');closeModal('signinModal');document.getElementById('signinNavBtn').textContent=e.split('@')[0];}
+
+// ── FAQ ──
+function toggleFaq(el){el.classList.toggle('open');}
+
+// ── Create event ──
+function selectTicket(el){document.querySelectorAll('.ticket-type').forEach(t=>{t.classList.remove('selected');t.querySelector('input').checked=false;});el.classList.add('selected');el.querySelector('input').checked=true;}
+function submitEvent(){showToast('🎉 Your event has been published!');setTimeout(()=>navigate('browse'),1500);}
+
+renderBrowseGrid(allEvents,'');
+</script>
+</body>
+</html>
