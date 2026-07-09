@@ -17,7 +17,7 @@
   "sign" : "3500",
   "signup" : "3500",
   "eligtitle" : "tomoo",
-  "eligcont" : "show",
+  "eligcont" : "afterpay",
   "showadtime" : "all",
   "activateacc" : "200",
   "islive" : "live",
@@ -25,6 +25,6 @@
   "showbadgeornot" : "True",
   "till" : ".",
   "payhero" : "https://payhero-api.onrender.com",
-  "payamount5" : "250",
+  "payamount5" : "270",
   "payhero1" : "https://payhero-api.onrender.com"
 }
